@@ -180,6 +180,7 @@ angular.module('akoenig.deckgrid').factory('Deckgrid', [
                 watcher,
                 filterWatcher,
                 sortOrderWatcher,
+                reverseSortWatcher,
                 mql;
 
             this.$$elem = element;
@@ -205,10 +206,13 @@ angular.module('akoenig.deckgrid').factory('Deckgrid', [
             this.$$watchers.push(watcher);
 
             filterWatcher = this.$$scope.$watchCollection('filter', this.$$onModelChange.bind(this));
- +          this.$$watchers.push(filterWatcher);
+            this.$$watchers.push(filterWatcher);
 
             sortOrderWatcher = this.$$scope.$watchCollection('sortOrder', this.$$onModelChange.bind(this));
-+           this.$$watchers.push(sortOrderWatcher);
+            this.$$watchers.push(sortOrderWatcher);
+
+            reverseSortWatcher = this.$$scope.$watchCollection('reverseSort', this.$$onModelChange.bind(this));
+            this.$$watchers.push(reverseSortWatcher);
 
             //
             // Register media query change events.
