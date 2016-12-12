@@ -61,6 +61,7 @@ angular.module('akoenig.deckgrid').factory('DeckgridDescriptor', [
 
             this.scope = {
                 'model': '=source',
+                'filterFn': '&',
                 'filter': '=',
                 'sortOrder': '=',
                 'reverseSort': '='
@@ -312,8 +313,7 @@ angular.module('akoenig.deckgrid').factory('Deckgrid', [
          */
         Deckgrid.prototype.$$createColumns = function $$createColumns () {
             var self = this,
-                filterResults = this.$$scope.model,
-                querySegments = this.$$scope.filter === undefined ? [] : this.$$scope.filter.split(' ');
+                filterResults = this.$$scope.model;
 
             if (!this.$$scope.layout) {
                 return $log.error('angular-deckgrid: No CSS configuration found (see ' +
@@ -323,9 +323,7 @@ angular.module('akoenig.deckgrid').factory('Deckgrid', [
             this.$$scope.columns = [];
 
             // Filter first
-            angular.forEach(querySegments, function (querySegment) {
-                filterResults = $filter('filter')(filterResults, querySegment);
-            });
+            filterResults = this.$$scope.filterFn();
 
             // Then, sort
             angular.forEach($filter('orderBy')(filterResults, this.$$scope.sortOrder, this.$$scope.reverseSort), function onIteration (card, index) {
