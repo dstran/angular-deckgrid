@@ -61,8 +61,8 @@ angular.module('akoenig.deckgrid').factory('DeckgridDescriptor', [
 
             this.scope = {
                 'model': '=source',
-                'filterFn': '&',
-                'filter': '=',
+                'filterFn': '&?',
+                'filter': '=?',
                 'sortOrder': '=',
                 'reverseSort': '='
             };
@@ -323,7 +323,9 @@ angular.module('akoenig.deckgrid').factory('Deckgrid', [
             this.$$scope.columns = [];
 
             // Filter first
-            filterResults = this.$$scope.filterFn();
+            if (this.$$scope.filterFn != null && this.$$scope.filterFn != undefined) {
+                filterResults = this.$$scope.filterFn();
+            }
 
             // Then, sort
             angular.forEach($filter('orderBy')(filterResults, this.$$scope.sortOrder, this.$$scope.reverseSort), function onIteration (card, index) {
